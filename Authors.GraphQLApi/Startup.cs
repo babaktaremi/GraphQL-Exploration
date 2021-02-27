@@ -10,8 +10,10 @@ using System.Threading.Tasks;
 using Authors.GraphQLApi.GraphQL;
 using Authors.GraphQLApi.Models;
 using Authors.GraphQLApi.Service;
+using GraphQL;
 using GraphQL.Server;
 using GraphQL.Server.Ui.Playground;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.EntityFrameworkCore;
 
 namespace Authors.GraphQLApi
@@ -38,13 +40,18 @@ namespace Authors.GraphQLApi
             #endregion
 
             #region GraphQL
-
+            services.AddScoped<IDependencyResolver>(s => new FuncDependencyResolver(s.GetRequiredService));
             services.AddScoped<AuthorQuery>();
             services.AddScoped<AuthorScheme>();
 
-            services.AddGraphQL()
+            services.Configure<KestrelServerOptions>(options =>
+            {
+                options.AllowSynchronousIO = true;
+            });
+
+            services.AddGraphQL(o => { o.ExposeExceptions = true; })
                 .AddGraphTypes(ServiceLifetime.Scoped)
-                .AddSystemTextJson();
+                .AddWebSockets();
 
             #endregion
         }

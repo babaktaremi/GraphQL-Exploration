@@ -14,5 +14,6 @@ namespace Authors.GraphQLApi.Models
         }
 
         public DbSet<Author> Authors { get; set; }
+        public DbSet<Book> Book { get; set; }
     }
 }

@@ -18,12 +18,17 @@ namespace Authors.GraphQLApi.Service
 
         public Task<Author> GetOneAsync(int id)
         {
-            return _db.Authors.FirstOrDefaultAsync(c => c.Id == id);
+            return _db.Authors.Include(c=>c.Books).FirstOrDefaultAsync(c => c.Id == id);
         }
 
         public Task<List<Author>> GetAllAsync()
         {
             return _db.Authors.ToListAsync();
+        }
+
+        public Task<List<Book>> GetAuthorBooksAsync(int authorId)
+        {
+            return _db.Book.Where(c => c.AuthorId == authorId).ToListAsync();
         }
     }
 }
