@@ -37,5 +37,12 @@ namespace Authors.GraphQLApi.Service
             var reviews = await _db.Book.Where(pr => authorIds.Contains(pr.AuthorId)).ToListAsync();
             return reviews.ToLookup(r => r.AuthorId);
         }
+
+        public async Task<Author> AddAuthor(Author author)
+        {
+            _db.Authors.Add(author);
+            await _db.SaveChangesAsync();
+            return author;
+        }
     }
 }

@@ -13,6 +13,7 @@ namespace Authors.GraphQLApi.GraphQL
         public AuthorScheme(IDependencyResolver resolver):base(resolver)
         {
             Query = resolver.Resolve<AuthorQuery>();
+            Mutation = resolver.Resolve<AuthorMutation>();
         }
     }
 }
