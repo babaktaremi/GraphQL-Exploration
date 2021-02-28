@@ -51,6 +51,7 @@ namespace Authors.GraphQLApi
 
             services.AddGraphQL(o => { o.ExposeExceptions = true; })
                 .AddGraphTypes(ServiceLifetime.Scoped)
+                .AddDataLoader()
                 .AddWebSockets();
 
             #endregion

@@ -26,9 +26,16 @@ namespace Authors.GraphQLApi.Service
             return _db.Authors.ToListAsync();
         }
 
-        public Task<List<Book>> GetAuthorBooksAsync(int authorId)
+        public async Task<IEnumerable<Book>> GetAuthorBooksAsync(int authorId)
         {
-            return _db.Book.Where(c => c.AuthorId == authorId).ToListAsync();
+            return await _db.Book.Where(c => c.AuthorId == authorId).ToListAsync();
+        }
+
+
+        public async Task<ILookup<int, Book>> GetAuthorBooksAsync(IEnumerable<int> authorIds)
+        {
+            var reviews = await _db.Book.Where(pr => authorIds.Contains(pr.AuthorId)).ToListAsync();
+            return reviews.ToLookup(r => r.AuthorId);
         }
     }
 }
